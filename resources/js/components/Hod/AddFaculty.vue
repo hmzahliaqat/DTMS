@@ -85,7 +85,7 @@
                                                         <div class="form-group">
                                                             <label for="first-name-column">Age</label>
                                                             <input type="text" v-model="Facultydata[index].age" id="age"
-                                                                class="form-control" placeholder="phone" name="phone" />
+                                                                class="form-control" placeholder="Age" name="phone" />
                                                             <p style="color: red;" v-if="error[index] && error[index].age">
                                                                 {{ error[index].age }}</p>
 
@@ -282,7 +282,9 @@
 
 <script>
 import axios from 'axios';
-
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+const $toast = useToast();
 export default {
 
     data() {
@@ -314,8 +316,13 @@ export default {
         addFaculty() {
 
             axios.post('/addFaculty', { dynamic_faculty: this.Facultydata }).then(res => {
-
+                let instance = $toast.success('Faculty Member Added!', {
+                    position: 'top-right',
+                });
             }).catch(error => {
+                let instance = $toast.error('something went wrong!', {
+                    position: 'top-right',
+                });
                 this.error = error?.response?.data?.errors;
 
                 console.log(error);
